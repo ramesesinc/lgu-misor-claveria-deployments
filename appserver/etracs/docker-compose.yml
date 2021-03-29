@@ -22,6 +22,7 @@ services:
       - "8070:8070"
     volumes:
       - ./modules:/apps/etracs25/modules
+      - ./dev-modules/rameses-gov-etracs-rptis-landtax-services.jar:/services/modules/rptis/rameses-gov-etracs-rptis-landtax-services.jar
 
       - ../../_custom/datasources:/services/datasources
       - ../../_res/connections:/apps/etracs25/connections/ext
