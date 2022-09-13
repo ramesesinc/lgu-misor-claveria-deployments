@@ -23,13 +23,15 @@ public class BusinessApplicationFactBuilder {
 		if(app.lobs!=null) {
 			app.lobs?.each {
 				//we need to retrieve lob to be absolutely sure.
-				def lobInfo = lobEm.find( [objid: it.lobid ]).first();
+				def lobInfo = lobEm.find([ objid: it.lobid ]).first();
 				def oLOB = new LOB();
 				oLOB.objid = it.lobid;
         		oLOB.lobid = it.lobid;
         		oLOB.assessmenttype = it.assessmenttype;  				
 				oLOB.name = lobInfo.name;
 				oLOB.classification = lobInfo.classification?.objid;
+				oLOB.psicid = lobInfo.psic?.code; 
+				oLOB.psicdesc = lobInfo.psic?.description; 
 
 				def attrs = lobAttr.find([lobid: it.lobid]).list();
 				oLOB.attributes = "-" + attrs*.lobattributeid.join("-") + "-";

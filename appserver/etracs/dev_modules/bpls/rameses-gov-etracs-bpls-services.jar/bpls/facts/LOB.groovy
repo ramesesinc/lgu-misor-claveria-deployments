@@ -9,18 +9,21 @@ public class LOB {
     String classification;
     String attributes;
     String assessmenttype;
+
+    String psicid;
+    String psicdesc;
     
-    /** Creates a new instance of LOB */
     public LOB() {
     }
 
 
     public void printInfo() {
-        /*print lob*/
-        println "Lob Fact"
-        println "objid " + this.objid;
-        println "lobid " + this.lobid;
-        println "assessment type " + this.assessmenttype;  
+        println "*** LOB Fact ***"
+        println "  objid     = " + this.objid;
+        println "  lobid     = " + this.lobid;
+        println "  psic id   = " + this.psicid;  
+        println "  psic desc = " + this.psicdesc;  
+        println "  assessment type = " + this.assessmenttype;  
     }
 
 }

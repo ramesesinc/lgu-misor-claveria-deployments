@@ -71,7 +71,10 @@ public class BusinessApplicationWorkflowService extends ActiveWorkflowService {
 			throw w;
 		}
 
-		def syswft = sys_wf_transition.find([ processname: processname, action: r.action, parentid: r.state ]).first(); 
+		def wfparam = [ processname: processname, action: r.action, parentid: r.state ]; 
+		if ( r.to ) wfparam.to = r.to; 
+
+		def syswft = sys_wf_transition.find( wfparam ).first(); 
 		if ( syswft ) r.to = syswft.to; 
 
 		def lockinfo = [refid: r.refid, state: r.to];  

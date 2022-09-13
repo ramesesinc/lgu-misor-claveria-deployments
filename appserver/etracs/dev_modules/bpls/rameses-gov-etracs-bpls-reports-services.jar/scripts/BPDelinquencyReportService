@@ -127,9 +127,15 @@ class BPDelinquencyReportService {
 		filter1.clear();
 		filter2.clear();
 		
-		return [ 
+		def result = [ 
 			reportdata: em_report.getReport( params ), 
 			builddate : builddate 
 		]; 
+		result.reportdata.each{
+			if ( it.businessaddress ) {
+				it.businessaddress = it.businessaddress.replaceAll("\\s{1,}"," "); 
+			}
+		}
+		return result; 
 	} 
 }
