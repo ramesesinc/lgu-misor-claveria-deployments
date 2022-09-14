@@ -33,9 +33,15 @@ public class RPTBillingService
 	@DataContext('collectiontype')
 	def em_collectiontype
 
+	@DataContext('barcode_launcher')
+	def em_barcodelauncher;
+
 
 	@Service()
 	def self
+
+	@Service( dynamic=true )
+	def dynaSvc;
 
 	@Service('Var')
 	def var 
@@ -97,9 +103,14 @@ public class RPTBillingService
 	}
 
 	@ProxyMethod
-	public def getBillByBarcode(params){
+	public def getBillByBarcode(params) { 
+		def colltype = null; 
 		if (!params.barcodeid.startsWith(BARCODE_KEY)){
-			params.barcodeid = BARCODE_KEY + ':' + params.barcodeid 
+			params.barcodeid = BARCODE_KEY + ':' + params.barcodeid;
+
+			def perSvc = dynaSvc.lookup('PersistenceService', 'treasury');
+			def bc = perSvc.read([ _schemaname: 'barcode_launcher', objid: BARCODE_KEY ]); 
+			colltype = bc?.collectiontype;  
 		}
 
 		params.barcode = params.barcodeid 
@@ -120,8 +131,21 @@ public class RPTBillingService
 			throw new Exception('Bill has already expired.')
 		}
 
-        def potype = em_paymentorder_type.find([objid: PAYMENTORDER_TYPE]).first()
-        bill.collectiontype = em_collectiontype.find([objid: potype?.collectiontype?.objid]).first()
+		bill.collectiontype = colltype; 
+
+        def potype = em_paymentorder_type.find([objid: PAYMENTORDER_TYPE]).first(); 
+        if ( potype ) {
+			def perSvc = dynaSvc.lookup('PersistenceService', 'treasury');
+			def bc = perSvc.read([ _schemaname: 'barcode_launcher', objid: potype?.collectiontype?.objid.toString() ]); 
+	        bill.collectiontype = bc?.collectiontype; 
+        }
+
+        if ( bill.collectiontype?.objid ) {
+        	// load collectiontype record 
+        	def perSvc = dynaSvc.lookup('PersistenceService', 'treasury');
+			def ctinfo = perSvc.read([ _schemaname: 'collectiontype', objid: bill.collectiontype.objid ]); 
+			if ( ctinfo ) bill.collectiontype = ctinfo; 
+        }
 
 		if (!bill.collectiontype) {
 			throw new Exception('Collection Type is not defined for barcode key ' + BARCODE_KEY + '.')
