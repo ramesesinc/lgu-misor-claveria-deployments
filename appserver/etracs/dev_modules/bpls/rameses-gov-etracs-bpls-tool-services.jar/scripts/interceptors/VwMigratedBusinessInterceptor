@@ -1,0 +1,29 @@
+import com.rameses.annotations.*;
+
+class VwMigratedBusinessInterceptor {
+
+	@DataContext( dynamic=true )
+	def dynaEm;
+
+	@After(pattern="BusinessMasterService.open")
+	public void afterOpen( evt ) { 
+		def result = evt.result;
+		if ( result?.objid ) {
+			def em = dynaEm.lookup('vw_migrated_business'); 
+			def bus = em.find([ objid: result.objid ]).first(); 
+			boolean b = (bus?.appstate.toString().toUpperCase() == 'FOR-APPROVAL');
+			result._requires_data_approval = b;
+		}
+	}
+
+	@After(pattern="BusinessMasterService.approveMigratedData")
+	public void afterApprovedMigratedData( evt ) { 
+		def param = evt.args[0]; 
+		def em = dynaEm.lookup('vw_migrated_business'); 
+		def bus = em.find([ objid: param.objid ]).select('objid,applicationid').first(); 
+		if ( bus ) { 
+			em.approve( bus ); 
+			em.approveApp( bus ); 
+		}
+	} 
+}

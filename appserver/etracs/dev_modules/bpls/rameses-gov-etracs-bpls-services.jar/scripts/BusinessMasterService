@@ -170,4 +170,13 @@ public class BusinessMasterService {
 		def smsSvc = dynaSvc.lookup('SMSService'); 
 		return smsSvc.send( o ); 
 	} 
+
+
+	@ProxyMethod 
+	public void approveMigratedData( param ) { 
+		if ( !param.objid ) 
+			throw new Exception("objid  parameter is required")
+
+		// to be intercepted
+	} 
 }
