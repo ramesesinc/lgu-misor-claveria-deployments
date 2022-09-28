@@ -46,7 +46,8 @@ class CashReceiptVoidService  {
 
 	@ProxyMethod
 	public def post( def p ) { 
-		if ( !p.receipt ) throw new Exception('receipt parameter is required'); 
+		if ( !p.receipt ) throw new Exception('receipt  parameter is required'); 
+		if ( !p.receipt.objid ) throw new Exception('receipt.objid  parameter is required'); 
 
 		def usr = null; 
 		if ( p.txnmode == 'CAPTURE' ) {
