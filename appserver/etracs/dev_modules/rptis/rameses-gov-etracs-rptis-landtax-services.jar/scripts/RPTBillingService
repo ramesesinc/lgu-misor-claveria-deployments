@@ -104,14 +104,16 @@ public class RPTBillingService
 
 	@ProxyMethod
 	public def getBillByBarcode(params) { 
-		def colltype = null; 
-		if (!params.barcodeid.startsWith(BARCODE_KEY)){
+		if ( !params.barcodeid.startsWith(BARCODE_KEY)) {
 			params.barcodeid = BARCODE_KEY + ':' + params.barcodeid;
+		}
 
+		def colltype = null; 
+		if ( params.barcodeid.startsWith(BARCODE_KEY)){
 			def perSvc = dynaSvc.lookup('PersistenceService', 'treasury');
 			def bc = perSvc.read([ _schemaname: 'barcode_launcher', objid: BARCODE_KEY ]); 
-			colltype = bc?.collectiontype;  
-		}
+			colltype = bc?.collectiontype;  			
+		} 
 
 		params.barcode = params.barcodeid 
 
