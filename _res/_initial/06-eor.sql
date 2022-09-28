@@ -1,6 +1,5 @@
--- EPayment DB Template 2.5.01.02.06
--- 
-create database eor;
+
+create database eor character set utf8;
 
 use eor; 
 
@@ -444,10 +443,23 @@ CREATE VIEW `vw_remittance_eor_share` AS select `c`.`remittanceid` AS `remittanc
 
 SET FOREIGN_KEY_CHECKS=1;
 
+
+
+
 INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) VALUES ('DBP', '101', 'DEVELOPMENT BANK OF THE PHILIPPINES', NULL, NULL, NULL, NULL, NULL, '101');
 INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) VALUES ('LBP', '102', 'LAND BANK OF THE PHILIPPINES', NULL, NULL, NULL, NULL, NULL, '102');
 INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) VALUES ('PAYMAYA', '103', 'PAYMAYA', NULL, NULL, NULL, NULL, NULL, '103');
 INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) VALUES ('GCASH', '104', 'GCASH', NULL, NULL, NULL, NULL, NULL, '104');
+
+INSERT INTO `epayment_plugin` (`objid`, `connection`, `servicename`) VALUES ('bpls', 'bpls', 'OnlineBusinessBillingService');
+INSERT INTO `epayment_plugin` (`objid`, `connection`, `servicename`) VALUES ('po', 'po', 'OnlinePaymentOrderService');
+INSERT INTO `epayment_plugin` (`objid`, `connection`, `servicename`) VALUES ('rptcol', 'rpt', 'OnlineLandTaxBillingService');
+INSERT INTO `epayment_plugin` (`objid`, `connection`, `servicename`) VALUES ('rpttaxclearance', 'landtax', 'OnlineRealtyTaxClearanceService');
+
+INSERT INTO `sys_email_template` (`objid`, `subject`, `message`) 
+VALUES ('eor', 'EOR No ${receiptno}', 'Dear valued customer <br>Please see attached Electronic OR. This is an electronic transaction. Do not reply');
+
+
 
 
 
