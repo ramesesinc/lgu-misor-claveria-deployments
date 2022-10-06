@@ -104,16 +104,9 @@ public class RPTBillingService
 
 	@ProxyMethod
 	public def getBillByBarcode(params) { 
-		if ( !params.barcodeid.startsWith(BARCODE_KEY)) {
+		if (!params.barcodeid.startsWith(BARCODE_KEY)){
 			params.barcodeid = BARCODE_KEY + ':' + params.barcodeid;
 		}
-
-		def colltype = null; 
-		if ( params.barcodeid.startsWith(BARCODE_KEY)){
-			def perSvc = dynaSvc.lookup('PersistenceService', 'treasury');
-			def bc = perSvc.read([ _schemaname: 'barcode_launcher', objid: BARCODE_KEY ]); 
-			colltype = bc?.collectiontype;  			
-		} 
 
 		params.barcode = params.barcodeid 
 
@@ -121,52 +114,51 @@ public class RPTBillingService
 			throw new Exception('barcode must be specified.')
 		}
 
-		def bill = em_rptbill.find([barcode:params.barcode]).first() 
+		def perSvc = dynaSvc.lookup('PersistenceService', 'treasury');
+		def bc = perSvc.read([ _schemaname: 'barcode_launcher', objid: BARCODE_KEY ]); 
+		def colltype = bc?.collectiontype; 
+		if ( !colltype ) {
+			// get collectiontype from paymentorder_type
+	        def potype = em_paymentorder_type.find([ objid: PAYMENTORDER_TYPE ]).first(); 
+	        if ( potype?.collectiontype?.objid ) {
+		        colltype = potype.collectiontype; 
+	        }
+		}
 
-		if (!bill) {
+        if ( colltype?.objid ) {
+        	// load collectiontype record 
+			colltype = perSvc.read([ _schemaname: 'collectiontype', objid: colltype.objid ]); 
+        } 
+		if ( !colltype?.objid ) {
+			throw new Exception('Collection Type is not defined for barcode key ' + BARCODE_KEY + '.')
+		}
+
+
+		def bill = em_rptbill.find([ barcode: params.barcode ]).first(); 
+		if ( !bill ) { 
 			throw new Exception('Invalid barcode or associated bill has already expired.')
 		}
 
-		def islocaltxn =  params._txntype == null || params._txntype != "FILIPIZEN"
-
-		if (islocaltxn && bill.expirydate <= dtSvc.serverDate) {
+		def islocaltxn =  (params._txntype == null || params._txntype != "FILIPIZEN"); 
+		if ( islocaltxn && bill.expirydate <= dtSvc.serverDate ) {
 			throw new Exception('Bill has already expired.')
 		}
 
 		bill.collectiontype = colltype; 
-
-        def potype = em_paymentorder_type.find([objid: PAYMENTORDER_TYPE]).first(); 
-        if ( potype ) {
-			def perSvc = dynaSvc.lookup('PersistenceService', 'treasury');
-			def bc = perSvc.read([ _schemaname: 'barcode_launcher', objid: potype?.collectiontype?.objid.toString() ]); 
-	        bill.collectiontype = bc?.collectiontype; 
-        }
-
-        if ( bill.collectiontype?.objid ) {
-        	// load collectiontype record 
-        	def perSvc = dynaSvc.lookup('PersistenceService', 'treasury');
-			def ctinfo = perSvc.read([ _schemaname: 'collectiontype', objid: bill.collectiontype.objid ]); 
-			if ( ctinfo ) bill.collectiontype = ctinfo; 
-        }
-
-		if (!bill.collectiontype) {
-			throw new Exception('Collection Type is not defined for barcode key ' + BARCODE_KEY + '.')
-		}
 
 		def pdate = dtSvc.parseCurrentDate()
 		bill.currentdate = pdate.date 
         bill.cy = pdate.year
         bill.cqtr = pdate.qtr
         bill.cmonth = pdate.month
-        bill.maxadvanceyear = getMaxAdvanceYear()
+        bill.maxadvanceyear = getMaxAdvanceYear();
         bill.totals = [:]
         bill.ledgers = em_rptbill_ledger.select('objid:{rptledgerid}').find([billid:bill.objid]).list()
         if (!bill.ledgers) {
         	throw new Exception('There are no unpaid ledgers for this bill.')
         }
-		return bill 
-	}	
-
+		return bill;
+	}
 
 	@Async
 	@ProxyMethod
