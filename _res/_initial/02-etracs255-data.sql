@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.5.59, for Win64 (AMD64)
 --
--- Host: localhost    Database: etracs255_mabini
+-- Host: localhost    Database: etracs255
 -- ------------------------------------------------------
 -- Server version	5.5.59
 
