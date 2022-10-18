@@ -7,21 +7,3 @@ services:
          ## this is only a seed mapping, please do not remove
          ##
          - ../../_custom/.emptydir:/.emptydir
-
-         ## mounted new updates
-         - ./dev_modules/admin:/services/modules/admin
-         - ./dev_modules/jasper:/services/modules/jasper
-         - ./dev_modules/notification:/services/modules/notification
-         - ./dev_modules/treasury:/services/modules/treasury
-         - ./dev_modules/bpls:/services/modules/bpls
-         - ./dev_modules/etracs:/services/modules/etracs
-
-         ## mounted rameses-common2 for compression util
-         - ./lib/rameses-common2.jar:/apps/server/lib/rameses-common2.jar
-
-         ## mounted RPTIS 
-         - ./dev_modules/rptis/rameses-gov-etracs-rptis-landtax-services.jar:/services/modules/rptis/rameses-gov-etracs-rptis-landtax-services.jar
-         - ./dev_modules/rptis/rameses-gov-etracs-rptis-landtax-report-services.jar:/services/modules/rptis/rameses-gov-etracs-rptis-landtax-report-services.jar
-         - ./dev_modules/rptis/rameses-gov-etracs-rptis-services.jar:/services/modules/rptis/rameses-gov-etracs-rptis-services.jar
-         - ./dev_modules/rptis/rameses-gov-etracs-rptis-report-services.jar:/services/modules/rptis/rameses-gov-etracs-rptis-report-services.jar
-         - ./dev_modules/rptis/rameses-gov-etracs-rptis-sms-services.jar:/services/modules/rptis/rameses-gov-etracs-rptis-sms-services.jar
