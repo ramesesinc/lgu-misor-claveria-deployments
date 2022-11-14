@@ -257,7 +257,7 @@ class EPaymentService   {
             rm.receiptdate = eor.receiptdate; 
             rm.paymentrefid = eor.paymentrefid;        
             cloudSvc.updatePaymentReceipt( rm );
-            poPaidEm.find( [objid: eor.paymentrefid ] ).update( [state: 'POSTED'] );
+            poPaidEm.find([ objid: eor.paymentrefid ]).update([ state: 'POSTED' ]);
             return true;
         }
         catch( ex ) {
@@ -288,13 +288,14 @@ class EPaymentService   {
         if( o.laststate ) laststate = o.laststate;
 
         def eor = postEOR( o, laststate );
-        if(!eor) return null;
+        if ( !eor ) return null;
 
-        eorEm.find( [objid: eor.objid] ).update( [state: "POSTED"] );
+        def updated = updateCloudPayment( eor, laststate );
+        if ( !updated ) return null;
 
+        eorEm.find([ objid: eor.objid] ).update([ state: "POSTED" ]);
         emailPayment( eor );
         return null;
-
     }    
 
 
