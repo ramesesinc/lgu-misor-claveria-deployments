@@ -1,35 +1,32 @@
+create database eor;
 
-CREATE DATABASE `eor` CHARACTER SET utf8
-;
-USE `eor`
-;
+use eor; 
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for eor
 -- ----------------------------
-DROP TABLE IF EXISTS `eor`;
 CREATE TABLE `eor` (
   `objid` varchar(50) NOT NULL,
-  `receiptno` varchar(50) DEFAULT NULL,
-  `receiptdate` date DEFAULT NULL,
-  `txndate` datetime DEFAULT NULL,
-  `state` varchar(10) DEFAULT NULL,
-  `partnerid` varchar(50) DEFAULT NULL,
-  `txntype` varchar(20) DEFAULT NULL,
-  `traceid` varchar(50) DEFAULT NULL,
-  `tracedate` datetime DEFAULT NULL,
-  `refid` varchar(50) DEFAULT NULL,
-  `paidby` varchar(255) DEFAULT NULL,
-  `paidbyaddress` varchar(255) DEFAULT NULL,
-  `payer_objid` varchar(50) DEFAULT NULL,
-  `paymethod` varchar(20) DEFAULT NULL,
-  `paymentrefid` varchar(50) DEFAULT NULL,
-  `remittanceid` varchar(50) DEFAULT NULL,
-  `remarks` varchar(255) DEFAULT NULL,
-  `amount` decimal(16,4) DEFAULT NULL,
-  `lockid` varchar(50) DEFAULT NULL,
+  `receiptno` varchar(50) NULL,
+  `receiptdate` date NULL,
+  `txndate` datetime NULL,
+  `state` varchar(10) NULL,
+  `partnerid` varchar(50) NULL,
+  `txntype` varchar(20) NULL,
+  `traceid` varchar(50) NULL,
+  `tracedate` datetime NULL,
+  `refid` varchar(50) NULL,
+  `paidby` varchar(255) NULL,
+  `paidbyaddress` varchar(255) NULL,
+  `payer_objid` varchar(50) NULL,
+  `paymethod` varchar(20) NULL,
+  `paymentrefid` varchar(50) NULL,
+  `remittanceid` varchar(50) NULL,
+  `remarks` varchar(255) NULL,
+  `amount` decimal(16,4) NULL,
+  `lockid` varchar(50) NULL,
   PRIMARY KEY (`objid`),
   UNIQUE KEY `uix_eor_receiptno` (`receiptno`),
   KEY `ix_receiptdate` (`receiptdate`),
@@ -48,31 +45,29 @@ CREATE TABLE `eor` (
 -- ----------------------------
 -- Table structure for eor_for_email
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_for_email`;
 CREATE TABLE `eor_for_email` (
   `objid` varchar(50) NOT NULL,
-  `txndate` datetime DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `mobileno` varchar(50) DEFAULT NULL,
-  `state` int(11) DEFAULT NULL,
-  `dtsent` datetime DEFAULT NULL,
-  `errmsg` varchar(255) DEFAULT NULL,
+  `txndate` datetime NULL,
+  `email` varchar(255) NULL,
+  `mobileno` varchar(50) NULL,
+  `state` int(11) NULL,
+  `dtsent` datetime NULL,
+  `errmsg` varchar(255) NULL,
   PRIMARY KEY (`objid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for eor_item
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_item`;
 CREATE TABLE `eor_item` (
   `objid` varchar(50) NOT NULL,
-  `parentid` varchar(50) DEFAULT NULL,
-  `item_objid` varchar(50) DEFAULT NULL,
-  `item_code` varchar(100) DEFAULT NULL,
-  `item_title` varchar(100) DEFAULT NULL,
-  `amount` decimal(16,4) DEFAULT NULL,
-  `remarks` varchar(255) DEFAULT NULL,
-  `item_fund_objid` varchar(50) DEFAULT NULL,
+  `parentid` varchar(50) NULL,
+  `item_objid` varchar(50) NULL,
+  `item_code` varchar(100) NULL,
+  `item_title` varchar(100) NULL,
+  `amount` decimal(16,4) NULL,
+  `remarks` varchar(255) NULL,
+  `item_fund_objid` varchar(50) NULL,
   PRIMARY KEY (`objid`),
   KEY `fk_eoritem_eor` (`parentid`),
   KEY `ix_item_objid` (`item_objid`),
@@ -83,20 +78,19 @@ CREATE TABLE `eor_item` (
 -- ----------------------------
 -- Table structure for eor_manual_post
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_manual_post`;
 CREATE TABLE `eor_manual_post` (
   `objid` varchar(50) NOT NULL,
-  `state` varchar(10) DEFAULT NULL,
-  `paymentorderno` varchar(50) DEFAULT NULL,
-  `amount` decimal(16,4) DEFAULT NULL,
-  `txntype` varchar(50) DEFAULT NULL,
-  `paymentpartnerid` varchar(50) DEFAULT NULL,
-  `traceid` varchar(50) DEFAULT NULL,
-  `tracedate` datetime DEFAULT NULL,
+  `state` varchar(10) NULL,
+  `paymentorderno` varchar(50) NULL,
+  `amount` decimal(16,4) NULL,
+  `txntype` varchar(50) NULL,
+  `paymentpartnerid` varchar(50) NULL,
+  `traceid` varchar(50) NULL,
+  `tracedate` datetime NULL,
   `reason` tinytext,
-  `createdby_objid` varchar(50) DEFAULT NULL,
-  `createdby_name` varchar(255) DEFAULT NULL,
-  `dtcreated` datetime DEFAULT NULL,
+  `createdby_objid` varchar(50) NULL,
+  `createdby_name` varchar(255) NULL,
+  `dtcreated` datetime NULL,
   PRIMARY KEY (`objid`),
   UNIQUE KEY `uix_eor_manual_post_paymentorderno` (`paymentorderno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -104,7 +98,6 @@ CREATE TABLE `eor_manual_post` (
 -- ----------------------------
 -- Table structure for eor_number
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_number`;
 CREATE TABLE `eor_number` (
   `objid` varchar(255) NOT NULL,
   `currentno` int(11) NOT NULL DEFAULT '1',
@@ -114,29 +107,28 @@ CREATE TABLE `eor_number` (
 -- ----------------------------
 -- Table structure for eor_paymentorder
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_paymentorder`;
 CREATE TABLE `eor_paymentorder` (
   `objid` varchar(50) NOT NULL,
-  `txndate` datetime DEFAULT NULL,
-  `txntype` varchar(50) DEFAULT NULL,
-  `txntypename` varchar(100) DEFAULT NULL,
-  `payer_objid` varchar(50) DEFAULT NULL,
+  `txndate` datetime NULL,
+  `txntype` varchar(50) NULL,
+  `txntypename` varchar(100) NULL,
+  `payer_objid` varchar(50) NULL,
   `payer_name` text,
   `paidby` text,
-  `paidbyaddress` varchar(150) DEFAULT NULL,
-  `particulars` varchar(500) DEFAULT NULL,
-  `amount` decimal(16,2) DEFAULT NULL,
-  `expirydate` date DEFAULT NULL,
-  `refid` varchar(50) DEFAULT NULL,
-  `refno` varchar(50) DEFAULT NULL,
+  `paidbyaddress` varchar(150) NULL,
+  `particulars` varchar(500) NULL,
+  `amount` decimal(16,2) NULL,
+  `expirydate` date NULL,
+  `refid` varchar(50) NULL,
+  `refno` varchar(50) NULL,
   `info` text,
-  `origin` varchar(100) DEFAULT NULL,
-  `controlno` varchar(50) DEFAULT NULL,
-  `locationid` varchar(25) DEFAULT NULL,
+  `origin` varchar(100) NULL,
+  `controlno` varchar(50) NULL,
+  `locationid` varchar(25) NULL,
   `items` mediumtext,
-  `state` varchar(32) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `mobileno` varchar(25) DEFAULT NULL,
+  `state` varchar(32) NULL,
+  `email` varchar(255) NULL,
+  `mobileno` varchar(25) NULL,
   PRIMARY KEY (`objid`),
   KEY `ix_state` (`state`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -144,29 +136,28 @@ CREATE TABLE `eor_paymentorder` (
 -- ----------------------------
 -- Table structure for eor_paymentorder_cancelled
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_paymentorder_cancelled`;
 CREATE TABLE `eor_paymentorder_cancelled` (
   `objid` varchar(50) NOT NULL,
-  `txndate` datetime DEFAULT NULL,
-  `txntype` varchar(50) DEFAULT NULL,
-  `txntypename` varchar(100) DEFAULT NULL,
-  `payer_objid` varchar(50) DEFAULT NULL,
+  `txndate` datetime NULL,
+  `txntype` varchar(50) NULL,
+  `txntypename` varchar(100) NULL,
+  `payer_objid` varchar(50) NULL,
   `payer_name` longtext,
   `paidby` longtext,
-  `paidbyaddress` varchar(150) DEFAULT NULL,
+  `paidbyaddress` varchar(150) NULL,
   `particulars` text,
-  `amount` decimal(16,2) DEFAULT NULL,
-  `expirydate` date DEFAULT NULL,
-  `refid` varchar(50) DEFAULT NULL,
-  `refno` varchar(50) DEFAULT NULL,
+  `amount` decimal(16,2) NULL,
+  `expirydate` date NULL,
+  `refid` varchar(50) NULL,
+  `refno` varchar(50) NULL,
   `info` longtext,
-  `origin` varchar(100) DEFAULT NULL,
-  `controlno` varchar(50) DEFAULT NULL,
-  `locationid` varchar(25) DEFAULT NULL,
+  `origin` varchar(100) NULL,
+  `controlno` varchar(50) NULL,
+  `locationid` varchar(25) NULL,
   `items` longtext,
-  `state` varchar(10) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `mobileno` varchar(50) DEFAULT NULL,
+  `state` varchar(10) NULL,
+  `email` varchar(255) NULL,
+  `mobileno` varchar(50) NULL,
   PRIMARY KEY (`objid`),
   KEY `ix_txndate` (`txndate`),
   KEY `ix_txntype` (`txntype`),
@@ -182,29 +173,28 @@ CREATE TABLE `eor_paymentorder_cancelled` (
 -- ----------------------------
 -- Table structure for eor_paymentorder_paid
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_paymentorder_paid`;
 CREATE TABLE `eor_paymentorder_paid` (
   `objid` varchar(50) NOT NULL,
-  `txndate` datetime DEFAULT NULL,
-  `txntype` varchar(50) DEFAULT NULL,
-  `txntypename` varchar(100) DEFAULT NULL,
-  `payer_objid` varchar(50) DEFAULT NULL,
+  `txndate` datetime NULL,
+  `txntype` varchar(50) NULL,
+  `txntypename` varchar(100) NULL,
+  `payer_objid` varchar(50) NULL,
   `payer_name` longtext,
   `paidby` longtext,
-  `paidbyaddress` varchar(150) DEFAULT NULL,
+  `paidbyaddress` varchar(150) NULL,
   `particulars` text,
-  `amount` decimal(16,2) DEFAULT NULL,
-  `expirydate` date DEFAULT NULL,
-  `refid` varchar(50) DEFAULT NULL,
-  `refno` varchar(50) DEFAULT NULL,
+  `amount` decimal(16,2) NULL,
+  `expirydate` date NULL,
+  `refid` varchar(50) NULL,
+  `refno` varchar(50) NULL,
   `info` longtext,
-  `origin` varchar(100) DEFAULT NULL,
-  `controlno` varchar(50) DEFAULT NULL,
-  `locationid` varchar(25) DEFAULT NULL,
+  `origin` varchar(100) NULL,
+  `controlno` varchar(50) NULL,
+  `locationid` varchar(25) NULL,
   `items` longtext,
-  `state` varchar(10) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `mobileno` varchar(50) DEFAULT NULL,
+  `state` varchar(10) NULL,
+  `email` varchar(255) NULL,
+  `mobileno` varchar(50) NULL,
   PRIMARY KEY (`objid`),
   KEY `ix_txndate` (`txndate`),
   KEY `ix_txntype` (`txntype`),
@@ -220,15 +210,14 @@ CREATE TABLE `eor_paymentorder_paid` (
 -- ----------------------------
 -- Table structure for eor_payment_error
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_payment_error`;
 CREATE TABLE `eor_payment_error` (
   `objid` varchar(50) NOT NULL,
   `txndate` datetime NOT NULL,
   `paymentrefid` varchar(50) NOT NULL,
   `errmsg` longtext NOT NULL,
   `errdetail` longtext,
-  `errcode` int(1) DEFAULT NULL,
-  `laststate` int(1) DEFAULT NULL,
+  `errcode` int(1) NULL,
+  `laststate` int(1) NULL,
   PRIMARY KEY (`objid`),
   UNIQUE KEY `ix_paymentrefid` (`paymentrefid`),
   KEY `ix_txndate` (`txndate`)
@@ -237,40 +226,38 @@ CREATE TABLE `eor_payment_error` (
 -- ----------------------------
 -- Table structure for eor_remittance
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_remittance`;
 CREATE TABLE `eor_remittance` (
   `objid` varchar(50) NOT NULL,
-  `state` varchar(50) DEFAULT NULL,
-  `controlno` varchar(50) DEFAULT NULL,
-  `partnerid` varchar(50) DEFAULT NULL,
-  `controldate` date DEFAULT NULL,
-  `dtcreated` datetime DEFAULT NULL,
-  `createdby_objid` varchar(50) DEFAULT NULL,
-  `createdby_name` varchar(255) DEFAULT NULL,
-  `amount` decimal(16,4) DEFAULT NULL,
-  `dtposted` datetime DEFAULT NULL,
-  `postedby_objid` varchar(50) DEFAULT NULL,
-  `postedby_name` varchar(255) DEFAULT NULL,
-  `lockid` varchar(50) DEFAULT NULL,
+  `state` varchar(50) NULL,
+  `controlno` varchar(50) NULL,
+  `partnerid` varchar(50) NULL,
+  `controldate` date NULL,
+  `dtcreated` datetime NULL,
+  `createdby_objid` varchar(50) NULL,
+  `createdby_name` varchar(255) NULL,
+  `amount` decimal(16,4) NULL,
+  `dtposted` datetime NULL,
+  `postedby_objid` varchar(50) NULL,
+  `postedby_name` varchar(255) NULL,
+  `lockid` varchar(50) NULL,
   PRIMARY KEY (`objid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for eor_remittance_fund
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_remittance_fund`;
 CREATE TABLE `eor_remittance_fund` (
   `objid` varchar(100) NOT NULL,
-  `remittanceid` varchar(50) DEFAULT NULL,
-  `fund_objid` varchar(50) DEFAULT NULL,
-  `fund_code` varchar(50) DEFAULT NULL,
-  `fund_title` varchar(255) DEFAULT NULL,
-  `amount` decimal(16,4) DEFAULT NULL,
-  `bankaccount_objid` varchar(50) DEFAULT NULL,
-  `bankaccount_title` varchar(255) DEFAULT NULL,
-  `bankaccount_bank_name` varchar(255) DEFAULT NULL,
-  `validation_refno` varchar(50) DEFAULT NULL,
-  `validation_refdate` date DEFAULT NULL,
+  `remittanceid` varchar(50) NULL,
+  `fund_objid` varchar(50) NULL,
+  `fund_code` varchar(50) NULL,
+  `fund_title` varchar(255) NULL,
+  `amount` decimal(16,4) NULL,
+  `bankaccount_objid` varchar(50) NULL,
+  `bankaccount_title` varchar(255) NULL,
+  `bankaccount_bank_name` varchar(255) NULL,
+  `validation_refno` varchar(50) NULL,
+  `validation_refdate` date NULL,
   PRIMARY KEY (`objid`),
   KEY `fk_eor_remittance_fund_remittance` (`remittanceid`),
   CONSTRAINT `fk_eor_remittance_fund_remittance` FOREIGN KEY (`remittanceid`) REFERENCES `eor_remittance` (`objid`)
@@ -279,56 +266,53 @@ CREATE TABLE `eor_remittance_fund` (
 -- ----------------------------
 -- Table structure for eor_share
 -- ----------------------------
-DROP TABLE IF EXISTS `eor_share`;
 CREATE TABLE `eor_share` (
   `objid` varchar(50) NOT NULL,
   `parentid` varchar(50) NOT NULL,
-  `refitem_objid` varchar(50) DEFAULT NULL,
-  `refitem_code` varchar(25) DEFAULT NULL,
-  `refitem_title` varchar(255) DEFAULT NULL,
-  `payableitem_objid` varchar(50) DEFAULT NULL,
-  `payableitem_code` varchar(25) DEFAULT NULL,
-  `payableitem_title` varchar(255) DEFAULT NULL,
-  `amount` decimal(16,4) DEFAULT NULL,
-  `share` decimal(16,2) DEFAULT NULL,
-  `receiptitemid` varchar(50) DEFAULT NULL,
+  `refitem_objid` varchar(50) NULL,
+  `refitem_code` varchar(25) NULL,
+  `refitem_title` varchar(255) NULL,
+  `payableitem_objid` varchar(50) NULL,
+  `payableitem_code` varchar(25) NULL,
+  `payableitem_title` varchar(255) NULL,
+  `amount` decimal(16,4) NULL,
+  `share` decimal(16,2) NULL,
+  `receiptitemid` varchar(50) NULL,
   PRIMARY KEY (`objid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for epayment_plugin
 -- ----------------------------
-DROP TABLE IF EXISTS `epayment_plugin`;
 CREATE TABLE `epayment_plugin` (
   `objid` varchar(50) NOT NULL,
-  `connection` varchar(50) DEFAULT NULL,
-  `servicename` varchar(255) DEFAULT NULL,
+  `connection` varchar(50) NULL,
+  `servicename` varchar(255) NULL,
   PRIMARY KEY (`objid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for jev
 -- ----------------------------
-DROP TABLE IF EXISTS `jev`;
 CREATE TABLE `jev` (
   `objid` varchar(150) NOT NULL,
-  `jevno` varchar(50) DEFAULT NULL,
-  `jevdate` date DEFAULT NULL,
-  `fundid` varchar(50) DEFAULT NULL,
-  `dtposted` datetime DEFAULT NULL,
-  `txntype` varchar(50) DEFAULT NULL,
-  `refid` varchar(50) DEFAULT NULL,
-  `refno` varchar(50) DEFAULT NULL,
-  `reftype` varchar(50) DEFAULT NULL,
-  `amount` decimal(16,4) DEFAULT NULL,
-  `state` varchar(32) DEFAULT NULL,
-  `postedby_objid` varchar(50) DEFAULT NULL,
-  `postedby_name` varchar(255) DEFAULT NULL,
-  `verifiedby_objid` varchar(50) DEFAULT NULL,
-  `verifiedby_name` varchar(255) DEFAULT NULL,
-  `dtverified` datetime DEFAULT NULL,
-  `batchid` varchar(50) DEFAULT NULL,
-  `refdate` date DEFAULT NULL,
+  `jevno` varchar(50) NULL,
+  `jevdate` date NULL,
+  `fundid` varchar(50) NULL,
+  `dtposted` datetime NULL,
+  `txntype` varchar(50) NULL,
+  `refid` varchar(50) NULL,
+  `refno` varchar(50) NULL,
+  `reftype` varchar(50) NULL,
+  `amount` decimal(16,4) NULL,
+  `state` varchar(32) NULL,
+  `postedby_objid` varchar(50) NULL,
+  `postedby_name` varchar(255) NULL,
+  `verifiedby_objid` varchar(50) NULL,
+  `verifiedby_name` varchar(255) NULL,
+  `dtverified` datetime NULL,
+  `batchid` varchar(50) NULL,
+  `refdate` date NULL,
   PRIMARY KEY (`objid`),
   KEY `ix_batchid` (`batchid`),
   KEY `ix_dtposted` (`dtposted`),
@@ -347,18 +331,17 @@ CREATE TABLE `jev` (
 -- ----------------------------
 -- Table structure for jevitem
 -- ----------------------------
-DROP TABLE IF EXISTS `jevitem`;
 CREATE TABLE `jevitem` (
   `objid` varchar(150) NOT NULL,
-  `jevid` varchar(150) DEFAULT NULL,
-  `accttype` varchar(50) DEFAULT NULL,
-  `acctid` varchar(50) DEFAULT NULL,
-  `acctcode` varchar(32) DEFAULT NULL,
-  `acctname` varchar(255) DEFAULT NULL,
-  `dr` decimal(16,4) DEFAULT NULL,
-  `cr` decimal(16,4) DEFAULT NULL,
-  `particulars` varchar(255) DEFAULT NULL,
-  `itemrefid` varchar(255) DEFAULT NULL,
+  `jevid` varchar(150) NULL,
+  `accttype` varchar(50) NULL,
+  `acctid` varchar(50) NULL,
+  `acctcode` varchar(32) NULL,
+  `acctname` varchar(255) NULL,
+  `dr` decimal(16,4) NULL,
+  `cr` decimal(16,4) NULL,
+  `particulars` varchar(255) NULL,
+  `itemrefid` varchar(255) NULL,
   PRIMARY KEY (`objid`),
   KEY `ix_jevid` (`jevid`),
   KEY `ix_ledgertype` (`accttype`),
@@ -372,35 +355,33 @@ CREATE TABLE `jevitem` (
 -- ----------------------------
 -- Table structure for paymentpartner
 -- ----------------------------
-DROP TABLE IF EXISTS `paymentpartner`;
 CREATE TABLE `paymentpartner` (
   `objid` varchar(50) NOT NULL,
-  `code` varchar(50) DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `branch` varchar(255) DEFAULT NULL,
-  `contact` varchar(255) DEFAULT NULL,
-  `mobileno` varchar(32) DEFAULT NULL,
-  `phoneno` varchar(32) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `indexno` varchar(3) DEFAULT NULL,
+  `code` varchar(50) NULL,
+  `name` varchar(100) NULL,
+  `branch` varchar(255) NULL,
+  `contact` varchar(255) NULL,
+  `mobileno` varchar(32) NULL,
+  `phoneno` varchar(32) NULL,
+  `email` varchar(255) NULL,
+  `indexno` varchar(3) NULL,
   PRIMARY KEY (`objid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for sys_email_queue
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_email_queue`;
 CREATE TABLE `sys_email_queue` (
   `objid` varchar(50) NOT NULL,
   `refid` varchar(50) NOT NULL,
   `state` int(11) NOT NULL,
-  `reportid` varchar(50) DEFAULT NULL,
+  `reportid` varchar(50) NULL,
   `dtsent` datetime NOT NULL,
   `to` varchar(255) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `message` text NOT NULL,
   `errmsg` longtext,
-  `connection` varchar(50) DEFAULT NULL,
+  `connection` varchar(50) NULL,
   PRIMARY KEY (`objid`),
   KEY `ix_refid` (`refid`),
   KEY `ix_state` (`state`),
@@ -411,7 +392,6 @@ CREATE TABLE `sys_email_queue` (
 -- ----------------------------
 -- Table structure for sys_email_template
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_email_template`;
 CREATE TABLE `sys_email_template` (
   `objid` varchar(50) NOT NULL,
   `subject` varchar(255) NOT NULL,
@@ -422,7 +402,6 @@ CREATE TABLE `sys_email_template` (
 -- ----------------------------
 -- Table structure for unpostedpayment
 -- ----------------------------
-DROP TABLE IF EXISTS `unpostedpayment`;
 CREATE TABLE `unpostedpayment` (
   `objid` varchar(50) NOT NULL,
   `txndate` datetime NOT NULL,
@@ -434,8 +413,8 @@ CREATE TABLE `unpostedpayment` (
   `partnerid` varchar(50) NOT NULL,
   `traceid` varchar(100) NOT NULL,
   `tracedate` datetime NOT NULL,
-  `refno` varchar(50) DEFAULT NULL,
-  `origin` varchar(50) DEFAULT NULL,
+  `refno` varchar(50) NULL,
+  `origin` varchar(50) NULL,
   `paymentorder` longtext,
   `errmsg` text NOT NULL,
   `errdetail` longtext,
@@ -450,11 +429,20 @@ CREATE TABLE `unpostedpayment` (
   KEY `ix_origin` (`origin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- ----------------------------
+-- View structure for vw_remittance_eor_item
+-- ----------------------------
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_remittance_eor_item` AS select `c`.`remittanceid` AS `remittanceid`,`r`.`controldate` AS `remittance_controldate`,`r`.`controlno` AS `remittance_controlno`,`cri`.`parentid` AS `receiptid`,`c`.`receiptdate` AS `receiptdate`,`c`.`receiptno` AS `receiptno`,`c`.`paidby` AS `paidby`,`c`.`paidbyaddress` AS `paidbyaddress`,`cri`.`item_fund_objid` AS `fundid`,`cri`.`item_objid` AS `acctid`,`cri`.`item_code` AS `acctcode`,`cri`.`item_title` AS `acctname`,`cri`.`remarks` AS `remarks`,`cri`.`amount` AS `amount` from ((`eor_remittance` `r` join `eor` `c` on((`c`.`remittanceid` = `r`.`objid`))) join `eor_item` `cri` on((`cri`.`parentid` = `c`.`objid`))) ;
+
+-- ----------------------------
+-- View structure for vw_remittance_eor_share
+-- ----------------------------
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_remittance_eor_share` AS select `c`.`remittanceid` AS `remittanceid`,`r`.`controldate` AS `remittance_controldate`,`r`.`controlno` AS `remittance_controlno`,`cri`.`parentid` AS `receiptid`,`c`.`receiptdate` AS `receiptdate`,`c`.`receiptno` AS `receiptno`,`c`.`paidby` AS `paidby`,`c`.`paidbyaddress` AS `paidbyaddress`,`cri`.`refitem_objid` AS `refacctid`,`cri`.`refitem_code` AS `refacctcode`,`cri`.`refitem_title` AS `refaccttitle`,`cri`.`payableitem_objid` AS `acctid`,`cri`.`payableitem_code` AS `acctcode`,`cri`.`payableitem_title` AS `acctname`,`cri`.`share` AS `amount` from ((`eor_remittance` `r` join `eor` `c` on((`c`.`remittanceid` = `r`.`objid`))) join `eor_share` `cri` on((`cri`.`parentid` = `c`.`objid`))) ;
 
 
-INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) 
-VALUES ('DBP', '101', 'DEVELOPMENT BANK OF THE PHILIPPINES', NULL, NULL, NULL, NULL, NULL, '101');
+SET FOREIGN_KEY_CHECKS=1;
 
-INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) 
-VALUES ('LBP', '102', 'LAND BANK OF THE PHILIPPINES', NULL, NULL, NULL, NULL, NULL, '102');
-
+INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) VALUES ('DBP', '101', 'DEVELOPMENT BANK OF THE PHILIPPINES', NULL, NULL, NULL, NULL, NULL, '101');
+INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) VALUES ('LBP', '102', 'LAND BANK OF THE PHILIPPINES', NULL, NULL, NULL, NULL, NULL, '102');
+INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) VALUES ('PAYMAYA', '103', 'PAYMAYA', NULL, NULL, NULL, NULL, NULL, '103');
+INSERT INTO `paymentpartner` (`objid`, `code`, `name`, `branch`, `contact`, `mobileno`, `phoneno`, `email`, `indexno`) VALUES ('GCASH', '104', 'GCASH', NULL, NULL, NULL, NULL, NULL, '104');
