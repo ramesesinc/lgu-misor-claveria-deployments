@@ -3,7 +3,7 @@ version: "3"
 services:
   etracs-server:
     container_name: etracs-server
-    image: ramesesinc/etracs-server-municipality:2.5.03.02.01
+    image: ramesesinc/etracs-server-municipality:2.5.05.01
     restart: always
     logging:
       driver: "json-file"
@@ -21,12 +21,14 @@ services:
       - "8061:8061"
       - "8070:8070"
     volumes:
-      - ./modules:/apps/etracs25/modules
-      - ./dev-modules/rameses-gov-etracs-rptis-landtax-services.jar:/services/modules/rptis/rameses-gov-etracs-rptis-landtax-services.jar
-
       - ../../_custom/datasources:/services/datasources
       - ../../_res/connections:/apps/etracs25/connections/ext
       - ../../_custom/module-server:/apps/etracs25/modules/ext/zzz-lgu-custom-module
 
       - ../../_custom/output:/apps/server/output
       - ../../_custom/fileserver:/fileserver
+
+      - ./client/reports:/apps/server/templates
+      - ../../_custom/module-client/etracs:/apps/server/templates/custom
+
+      - ../../_custom/report-files/enterprise:/report-files
