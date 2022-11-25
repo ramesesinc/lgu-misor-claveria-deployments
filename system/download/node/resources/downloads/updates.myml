@@ -1,6 +1,6 @@
 app:
    env:
-      "app.title" : "ETRACS 2.5 build 2.5.03.02.01 (${lgu_name})"
+      "app.title" : "ETRACS 2.5 build 2.5.05.01 (${lgu_name})"
       "app.host" : "${app_server_ip}:8070"
       "app.cluster" : "osiris3"
       "app.context" : "etracs25"
@@ -15,4 +15,4 @@ app:
 
    modules:
       # 3rd party libs
-      - { order: 90, version: 2.55, file: "modules/libs/commons-net-3.5.jar" }
+      - { order: 90, version: 2.02, file: "modules/libs/commons-net-3.5.jar" }
